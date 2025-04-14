@@ -13,7 +13,7 @@ CREATE TABLE positions (
 
 CREATE TABLE market_data (
     id SERIAL PRIMARY KEY,
-    symbol VARCHAR(10) NOT NULL,
+    symbol VARCHAR(10) NOT NULL UNIQUE,
     current_price NUMERIC(10, 2) NOT NULL,
     timestamp TIMESTAMPTZ DEFAULT NOW()
 );

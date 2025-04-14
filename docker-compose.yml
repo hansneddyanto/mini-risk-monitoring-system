@@ -13,7 +13,7 @@ services:
       - ./backend/db_schema.sql:/docker-entrypoint-initdb.d/1_db_schema.sql
       - ./backend/db_seed.sql:/docker-entrypoint-initdb.d/2_db_seed.sql
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   backend:
     build: ./backend

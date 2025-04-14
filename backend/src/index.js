@@ -14,6 +14,8 @@ const positionRoutes = require("./routes/positions");
 app.use("/api/positions", positionRoutes);
 const marginRoutes = require("./routes/margin");
 app.use("/api/margin-status", marginRoutes);
+const syncRoutes = require("./routes/sync");
+app.use("/api", syncRoutes);
 
 // DB connection test
 db.query("SELECT NOW()")
