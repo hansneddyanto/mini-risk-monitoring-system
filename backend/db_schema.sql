@@ -33,3 +33,12 @@ CREATE TABLE settings (
     value NUMERIC
 );
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL, -- hashed
+  role TEXT CHECK (role IN ('admin', 'client')) NOT NULL,
+  client_id INTEGER REFERENCES clients(id) -- only for client users
+);
+
+

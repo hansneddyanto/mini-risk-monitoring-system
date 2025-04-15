@@ -58,3 +58,16 @@ INSERT INTO market_data (symbol, current_price) VALUES
 -- Set initial value of mmr to 0.25
 INSERT INTO settings (key, value) VALUES ('mmr', 0.25);
 
+-- USERS
+-- Passwords (bcryptjs-hashed versions of 'admin123' and 'client123')
+-- These were precomputed using bcryptjs with 10 salt rounds
+INSERT INTO users (email, password, role, client_id) VALUES
+  ('admin@example.com', '$2a$10$s8XgGQe5YqjMz4X07nZ0y.IG8V5TOD9IsFOXZe1TbGLKX/ESHmQU6', 'admin', NULL),
+  ('alice@example.com', '$2a$10$6R.23wuRD1J.PRMz2bSSbezJPIcSirqsw.UcWVLigB5k6507qDYiG', 'client', 1),
+  ('bob@example.com',   '$2a$10$6R.23wuRD1J.PRMz2bSSbezJPIcSirqsw.UcWVLigB5k6507qDYiG', 'client', 2),
+  ('charlie@example.com', '$2a$10$6R.23wuRD1J.PRMz2bSSbezJPIcSirqsw.UcWVLigB5k6507qDYiG', 'client', 3),
+  ('diana@example.com', '$2a$10$6R.23wuRD1J.PRMz2bSSbezJPIcSirqsw.UcWVLigB5k6507qDYiG', 'client', 4),
+  ('evelyn@example.com', '$2a$10$6R.23wuRD1J.PRMz2bSSbezJPIcSirqsw.UcWVLigB5k6507qDYiG', 'client', 5);
+
+
+

@@ -1,11 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const authenticateToken = require("../middleware/authMiddleware");
 
 // GET /api/positions/:clientId
-router.get("/:clientId", async (req, res) => {
+router.get("/:clientId", authenticateToken, async (req, res) => {
   const { clientId } = req.params;
 
+  // Admins can access all; clients can only access their own
+  if (req.user.role === "client" && req.user.clientId != clientId) {
+    return res.status(403).json({ error: "Access denied" });
+  }
+  
   try {
     const query = `
       SELECT 

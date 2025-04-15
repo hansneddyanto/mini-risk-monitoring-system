@@ -22,6 +22,9 @@ const clientRoutes = require("./routes/clients");
 app.use("/api", clientRoutes);
 const settingsRoutes = require("./routes/settings");
 app.use("/api", settingsRoutes);
+const authRoutes = require("./routes/auth");
+app.use("/api", authRoutes);
+
 
 // DB connection test
 db.query("SELECT NOW()")
