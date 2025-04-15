@@ -9,6 +9,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(1); // default to 1
+  const [mmr, setMmr] = useState(0.25);
+
 
 
   useEffect(() => {
@@ -43,6 +45,13 @@ function App() {
       alert("Failed to sync prices.");
     }
   };
+
+  useEffect(() => {
+    axios.get(`${API_BASE}/api/mmr`)
+      .then(res => setMmr(res.data.mmr))
+      .catch(err => console.error("Failed to load MMR:", err));
+  }, []);
+  
   
   useEffect(() => {
     axios.get(`${API_BASE}/api/clients`)
@@ -114,6 +123,26 @@ function App() {
           </p>
         </>
       )}
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label>MMR (%): </label>
+        <input
+          type="number"
+          step="0.01"
+          min="0.1"
+          max="1"
+          value={mmr}
+          onChange={(e) => setMmr(e.target.value)}
+        />
+        <button onClick={() => {
+          axios.post(`${API_BASE}/api/mmr`, { mmr: parseFloat(mmr) });
+          alert("MMR updated");
+          window.location.reload(); // or re-fetch margin
+        }}>
+          Update MMR
+        </button>
+      </div>
+
 
     </div>
   );

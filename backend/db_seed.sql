@@ -54,3 +54,7 @@ INSERT INTO market_data (symbol, current_price) VALUES
   ('NFLX', 510.00),
   ('NVDA', 495.00),
   ('AMZN', 3385.00);
+
+-- Set initial value of mmr to 0.25
+INSERT INTO settings (key, value) VALUES ('mmr', 0.25);
+

@@ -27,3 +27,9 @@ CREATE TABLE margin (
     margin_shortfall NUMERIC(12, 2),
     margin_call BOOLEAN DEFAULT FALSE
 );
+
+CREATE TABLE settings (
+    key TEXT PRIMARY KEY,
+    value NUMERIC
+);
+

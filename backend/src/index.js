@@ -20,6 +20,8 @@ const marketDataRoutes = require("./routes/marketData");
 app.use("/api", marketDataRoutes);
 const clientRoutes = require("./routes/clients");
 app.use("/api", clientRoutes);
+const settingsRoutes = require("./routes/settings");
+app.use("/api", settingsRoutes);
 
 // DB connection test
 db.query("SELECT NOW()")

@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db");
 
-const MMR = 0.25; // Maintenance Margin Rate
-
 router.get("/:clientId", async (req, res) => {
   const { clientId } = req.params;
 
@@ -43,8 +41,10 @@ router.get("/:clientId", async (req, res) => {
       portfolioValue += qty * price;
     }
 
+    const mmrResult = await db.query("SELECT value FROM settings WHERE key = 'mmr'");
+    const mmr = parseFloat(mmrResult.rows[0].value); // e.g., 0.25
     const netEquity = portfolioValue - loanAmount;
-    const marginRequirement = MMR * portfolioValue;
+    const marginRequirement = mmr * portfolioValue;
     const marginShortfall = marginRequirement - netEquity;
     const marginCall = marginShortfall > 0;
 
