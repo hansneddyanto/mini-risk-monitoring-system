@@ -7,16 +7,19 @@ function App() {
   const [positions, setPositions] = useState([]);
   const [margin, setMargin] = useState(null);
   const [loading, setLoading] = useState(true);
-  const clientId = 1;
+  const [clients, setClients] = useState([]);
+  const [selectedClientId, setSelectedClientId] = useState(1); // default to 1
+
 
   useEffect(() => {
+    if (!selectedClientId) return;
+  
     async function fetchData() {
       try {
         const [posRes, marginRes] = await Promise.all([
-          axios.get(`${API_BASE}/api/positions/${clientId}`),
-          axios.get(`${API_BASE}/api/margin-status/${clientId}`)
+          axios.get(`${API_BASE}/api/positions/${selectedClientId}`),
+          axios.get(`${API_BASE}/api/margin-status/${selectedClientId}`),
         ]);
-
         setPositions(posRes.data.positions);
         setMargin(marginRes.data);
       } catch (err) {
@@ -25,9 +28,10 @@ function App() {
         setLoading(false);
       }
     }
-
+  
     fetchData();
-  }, []);
+  }, [selectedClientId]); // re-run when selectedClientId changes
+  
 
   const handleSync = async () => {
     try {
@@ -40,12 +44,30 @@ function App() {
     }
   };
   
+  useEffect(() => {
+    axios.get(`${API_BASE}/api/clients`)
+      .then(res => setClients(res.data))
+      .catch(err => console.error("Failed to fetch clients:", err));
+  }, []);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: "1rem", fontFamily: "Arial" }}>
-      <h1>Client #{clientId} Portfolio</h1>
+
+    <label>Select Client: </label>
+    <select
+      value={selectedClientId}
+      onChange={(e) => setSelectedClientId(Number(e.target.value))}
+    >
+      {clients.map(client => (
+        <option key={client.id} value={client.id}>
+          {client.id}
+        </option>
+      ))}
+    </select>
+
+      <h1>Client #{selectedClientId} Portfolio</h1>
 
       <button onClick={handleSync} style={{ marginBottom: "1rem" }}>
         Sync Market Prices
