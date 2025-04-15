@@ -29,11 +29,27 @@ function App() {
     fetchData();
   }, []);
 
+  const handleSync = async () => {
+    try {
+      await axios.post(`${API_BASE}/api/sync-prices`);
+      alert("Prices synced successfully!");
+      window.location.reload(); // or re-fetch data more cleanly
+    } catch (error) {
+      console.error("Sync failed:", error);
+      alert("Failed to sync prices.");
+    }
+  };
+  
+
   if (loading) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: "1rem", fontFamily: "Arial" }}>
       <h1>Client #{clientId} Portfolio</h1>
+
+      <button onClick={handleSync} style={{ marginBottom: "1rem" }}>
+        Sync Market Prices
+      </button>
 
       <h2>Positions</h2>
       <table border="1" cellPadding="8" style={{ marginBottom: "1rem" }}>
