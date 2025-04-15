@@ -16,6 +16,8 @@ const marginRoutes = require("./routes/margin");
 app.use("/api/margin-status", marginRoutes);
 const syncRoutes = require("./routes/sync");
 app.use("/api", syncRoutes);
+const marketDataRoutes = require("./routes/marketData");
+app.use("/api", marketDataRoutes);
 
 // DB connection test
 db.query("SELECT NOW()")
