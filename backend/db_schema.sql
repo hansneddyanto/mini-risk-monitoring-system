@@ -35,6 +35,7 @@ CREATE TABLE settings (
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL, -- hashed
   role TEXT CHECK (role IN ('admin', 'client')) NOT NULL,
