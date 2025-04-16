@@ -22,8 +22,10 @@ const settingsRoutes = require("./routes/settings");
 app.use("/api", settingsRoutes);
 const authRoutes = require("./routes/auth");
 app.use("/api", authRoutes);
-const clientRoutes = require("./routes/clients");
-app.use("/api", clientRoutes);
+const clientsSummaryRoutes = require("./routes/clients-summary");
+app.use("/api", clientsSummaryRoutes);
+const clientsRoutes = require("./routes/clients");
+app.use("/api", clientsRoutes);
 
 
 // DB connection test

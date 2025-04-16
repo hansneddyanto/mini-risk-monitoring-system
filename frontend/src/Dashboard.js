@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AdminCharts from "./AdminCharts";
 
 function Dashboard() {
   const token = localStorage.getItem("token");
@@ -9,6 +10,7 @@ function Dashboard() {
   const [margin, setMargin] = useState(null);
   const [clients, setClients] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(user.clientId || 1);
+  const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
   const API_BASE = "http://localhost:3001";
@@ -61,6 +63,24 @@ function Dashboard() {
           Logout
         </button>
       </div>
+
+      {/* Dashboard/chart tabs */}
+      <div className="flex space-x-4 mb-6">
+      <button
+        onClick={() => setActiveTab("dashboard")}
+        className={`px-4 py-2 rounded ${activeTab === "dashboard" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+      >
+        Dashboard
+      </button>
+      {user.role === "admin" && (
+        <button
+          onClick={() => setActiveTab("charts")}
+          className={`px-4 py-2 rounded ${activeTab === "charts" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+        >
+          Data Visualizations
+        </button>
+      )}
+    </div>
 
       {/* Client Selector (admin only) */}
       {user.role === "admin" && (
@@ -193,6 +213,16 @@ function Dashboard() {
               >
                 Update
               </button>
+
+              {activeTab === "dashboard" && (
+                <>
+                  {/* existing dashboard content */}
+                </>
+              )}
+              {activeTab === "charts" && user.role === "admin" && (
+                <AdminCharts token={token} />
+              )}
+
             </div>
           </div>
         </div>
