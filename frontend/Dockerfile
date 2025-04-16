@@ -1,4 +1,5 @@
-FROM node:18
+# Stage 1: Build React app
+FROM node:18 as build
 
 WORKDIR /app
 
@@ -7,12 +8,14 @@ RUN npm install
 
 COPY . .
 
-# Build React app for production
 RUN npm run build
 
-# Use a lightweight web server to serve frontend
+# Stage 2: Use a lightweight web server to serve frontend
 FROM nginx:alpine
-COPY --from=0 /app/build /usr/share/nginx/html
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy built app from previous stage
+COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
