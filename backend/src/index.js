@@ -18,12 +18,12 @@ const syncRoutes = require("./routes/sync");
 app.use("/api", syncRoutes);
 const marketDataRoutes = require("./routes/marketData");
 app.use("/api", marketDataRoutes);
-const clientRoutes = require("./routes/clients");
-app.use("/api", clientRoutes);
 const settingsRoutes = require("./routes/settings");
 app.use("/api", settingsRoutes);
 const authRoutes = require("./routes/auth");
 app.use("/api", authRoutes);
+const clientRoutes = require("./routes/clients");
+app.use("/api", clientRoutes);
 
 
 // DB connection test

@@ -44,11 +44,6 @@ function Dashboard() {
     fetchAll();
   }, [token, selectedClientId, user.role]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Header */}
