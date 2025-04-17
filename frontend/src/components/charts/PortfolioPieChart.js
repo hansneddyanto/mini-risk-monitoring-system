@@ -35,7 +35,6 @@ function PortfolioPieChart({ data }) {
             cx="50%"
             cy="50%"
             outerRadius={100}
-            label
           >
             <Cell fill="#60a5fa" />
             <Cell fill="#f87171" />

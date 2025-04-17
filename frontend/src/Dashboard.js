@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AdminCharts from "./components/AdminCharts";
+import MarketDataTab from "./MarketDataTab";
 
 function Dashboard() {
   const token = localStorage.getItem("token");
@@ -72,6 +73,14 @@ function Dashboard() {
         >
           Dashboard
         </button>
+
+        <button
+          onClick={() => setActiveTab("market")}
+          className={`px-4 py-2 rounded ${activeTab === "market" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+        >
+          Market Data
+        </button>
+
         {user.role === "admin" && (
           <button
             onClick={() => setActiveTab("charts")}
@@ -85,6 +94,7 @@ function Dashboard() {
       {/* Dashboard Tab */}
       {activeTab === "dashboard" && (
         <>
+          {/* Client Selector */}
           {user.role === "admin" && (
             <div className="mb-6">
               <label className="text-sm font-medium mr-2">View Client:</label>
@@ -156,22 +166,6 @@ function Dashboard() {
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Admin Controls</h3>
 
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
-                <button
-                  onClick={async () => {
-                    try {
-                      await axios.post(`${API_BASE}/api/sync-prices`, {}, {
-                        headers: { Authorization: `Bearer ${token}` },
-                      });
-                      alert("Prices synced successfully!");
-                    } catch (err) {
-                      console.error("Sync failed:", err);
-                      alert("Failed to sync prices.");
-                    }
-                  }}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                >
-                  Sync Market Prices
-                </button>
 
                 <div className="flex items-center gap-2">
                   <label className="text-sm text-gray-600">Set MMR (%):</label>
@@ -215,6 +209,12 @@ function Dashboard() {
       {activeTab === "charts" && user.role === "admin" && (
         <AdminCharts token={token} />
       )}
+
+      {/* Market Data Tab */}
+      {activeTab === "market" && (
+        <MarketDataTab token={token} />
+      )}
+
     </div>
   );
 }
