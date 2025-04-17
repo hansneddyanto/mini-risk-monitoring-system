@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ClientBarChart from "./charts/ClientBarChart";
-import PortfolioPieChart from "./charts/PortfolioPieChart";
+import ClientBarChart from "../charts/ClientBarChart";
+import PortfolioPieChart from "../charts/PortfolioPieChart";
 
-function AdminCharts({ token }) {
+function DataVisualizationsTab({ token }) {
   const [perClientData, setPerClientData] = useState([]);
   const [aggregateData, setAggregateData] = useState(null);
 
@@ -38,4 +38,4 @@ function AdminCharts({ token }) {
   );
 }
 
-export default AdminCharts;
+export default DataVisualizationsTab;

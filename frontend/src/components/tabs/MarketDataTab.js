@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MarketDataChart from "./components/charts/MarketDataChart";
+import MarketDataChart from "../charts/MarketDataChart";
 
 function MarketDataTab() {
   const [symbols, setSymbols] = useState([]);
