@@ -44,7 +44,7 @@ router.get("/:clientId", authenticateToken, async (req, res) => {
       return acc + qty * price;
     }, 0);
 
-    const result = calculateMarginStatus({ portfolioValue, loanAmount, mmr });
+    const result = calculateMarginStatus( portfolioValue, loanAmount, mmr );
     result.clientId = parseInt(clientId); // preserve original response structure
 
     res.json(result);
