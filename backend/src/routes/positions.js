@@ -18,10 +18,15 @@ router.get("/:clientId", authenticateToken, async (req, res) => {
         p.symbol, 
         p.quantity, 
         p.cost_basis, 
-        md.current_price
+        md.price AS current_price
       FROM positions p
-      LEFT JOIN market_data md
-        ON p.symbol = md.symbol
+      LEFT JOIN LATERAL (
+        SELECT price
+        FROM market_data md
+        WHERE md.symbol = p.symbol
+        ORDER BY timestamp DESC
+        LIMIT 1
+      ) md ON true
       WHERE p.client_id = $1
     `;
 

@@ -27,13 +27,13 @@ VALUES
 -- Positions for Diana (Client ID 4)
 INSERT INTO positions (client_id, symbol, quantity, cost_basis)
 VALUES
-  (4, 'NVDA', 25, 500.00),
+  (4, 'TSLA', 25, 500.00),
   (4, 'MSFT', 60, 290.00);
 
 -- Positions for Evelyn (Client ID 5)
 INSERT INTO positions (client_id, symbol, quantity, cost_basis)
 VALUES
-  (5, 'AMZN', 10, 3300.00),
+  (5, 'AAPL', 10, 3300.00),
   (5, 'TSLA', 20, 780.00);
 
 -- Margin Loans
@@ -45,15 +45,52 @@ VALUES
   (4, 15000.00),
   (5, 40000.00);
 
--- Latest market data (non-historical, one row per symbol)
-INSERT INTO market_data (symbol, current_price) VALUES
-  ('AAPL', 175.80),
-  ('MSFT', 312.40),
-  ('GOOGL', 2785.50),
-  ('TSLA', 790.00),
-  ('NFLX', 510.00),
-  ('NVDA', 495.00),
-  ('AMZN', 3385.00);
+-- Historical Market Data: 5 stocks × 7 days
+INSERT INTO market_data (symbol, price, timestamp) VALUES
+-- AAPL
+('AAPL', 172.30, NOW() - INTERVAL '6 days'),
+('AAPL', 173.20, NOW() - INTERVAL '5 days'),
+('AAPL', 174.10, NOW() - INTERVAL '4 days'),
+('AAPL', 175.00, NOW() - INTERVAL '3 days'),
+('AAPL', 175.80, NOW() - INTERVAL '2 days'),
+('AAPL', 174.90, NOW() - INTERVAL '1 day'),
+('AAPL', 175.40, NOW()),
+
+-- MSFT
+('MSFT', 305.10, NOW() - INTERVAL '6 days'),
+('MSFT', 308.90, NOW() - INTERVAL '5 days'),
+('MSFT', 310.20, NOW() - INTERVAL '4 days'),
+('MSFT', 311.00, NOW() - INTERVAL '3 days'),
+('MSFT', 312.40, NOW() - INTERVAL '2 days'),
+('MSFT', 311.70, NOW() - INTERVAL '1 day'),
+('MSFT', 312.10, NOW()),
+
+-- TSLA
+('TSLA', 775.00, NOW() - INTERVAL '6 days'),
+('TSLA', 780.00, NOW() - INTERVAL '5 days'),
+('TSLA', 785.00, NOW() - INTERVAL '4 days'),
+('TSLA', 788.00, NOW() - INTERVAL '3 days'),
+('TSLA', 790.00, NOW() - INTERVAL '2 days'),
+('TSLA', 791.00, NOW() - INTERVAL '1 day'),
+('TSLA', 792.00, NOW()),
+
+-- GOOGL
+('GOOGL', 2760.00, NOW() - INTERVAL '6 days'),
+('GOOGL', 2770.00, NOW() - INTERVAL '5 days'),
+('GOOGL', 2780.00, NOW() - INTERVAL '4 days'),
+('GOOGL', 2785.00, NOW() - INTERVAL '3 days'),
+('GOOGL', 2785.50, NOW() - INTERVAL '2 days'),
+('GOOGL', 2786.00, NOW() - INTERVAL '1 day'),
+('GOOGL', 2786.50, NOW()),
+
+-- NFLX
+('NFLX', 505.00, NOW() - INTERVAL '6 days'),
+('NFLX', 507.00, NOW() - INTERVAL '5 days'),
+('NFLX', 509.00, NOW() - INTERVAL '4 days'),
+('NFLX', 510.00, NOW() - INTERVAL '3 days'),
+('NFLX', 510.50, NOW() - INTERVAL '2 days'),
+('NFLX', 509.50, NOW() - INTERVAL '1 day'),
+('NFLX', 510.00, NOW());
 
 -- Set initial value of mmr to 0.25
 INSERT INTO settings (key, value) VALUES ('mmr', 0.25);

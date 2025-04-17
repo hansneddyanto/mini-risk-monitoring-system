@@ -12,16 +12,10 @@ router.post("/sync-prices", async (req, res) => {
       const price = await fetchPrice(symbol);
       if (price) {
         await db.query(
-            `
-            INSERT INTO market_data (symbol, current_price, timestamp)
-            VALUES ($1, $2, NOW())
-            ON CONFLICT (symbol)
-            DO UPDATE SET 
-              current_price = EXCLUDED.current_price,
-              timestamp = EXCLUDED.timestamp
-            `,
-            [symbol, price]
-          );
+          `INSERT INTO market_data (symbol, price, timestamp)
+           VALUES ($1, $2, NOW())`,
+          [symbol, price]
+        );
       }
     }
 

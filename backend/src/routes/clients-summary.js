@@ -14,7 +14,13 @@ router.get("/clients-summary", authenticateToken, requireAdmin, async (req, res)
         COALESCE(m.loan_amount, 0) AS "loanAmount"
       FROM clients c
       LEFT JOIN positions p ON p.client_id = c.id
-      LEFT JOIN market_data md ON md.symbol = p.symbol
+      LEFT JOIN LATERAL (
+        SELECT price AS current_price
+        FROM market_data md
+        WHERE md.symbol = p.symbol
+        ORDER BY timestamp DESC
+        LIMIT 1
+      ) md ON true
       LEFT JOIN margin m ON m.client_id = c.id
       GROUP BY c.id, c.name, m.loan_amount
       ORDER BY c.id
@@ -41,7 +47,13 @@ router.get("/clients-aggregate", authenticateToken, requireAdmin, async (req, re
           p.client_id, 
           SUM(p.quantity * md.current_price) AS total_portfolio_value
         FROM positions p
-        LEFT JOIN market_data md ON md.symbol = p.symbol
+        LEFT JOIN LATERAL (
+          SELECT price AS current_price
+          FROM market_data md
+          WHERE md.symbol = p.symbol
+          ORDER BY timestamp DESC
+          LIMIT 1
+        ) md ON true
         GROUP BY p.client_id
       ) p ON p.client_id = c.id
       LEFT JOIN (
