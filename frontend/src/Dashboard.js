@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AdminCharts from "./AdminCharts";
+import AdminCharts from "./components/AdminCharts";
 
 function Dashboard() {
   const token = localStorage.getItem("token");
