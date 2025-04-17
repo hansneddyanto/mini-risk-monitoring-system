@@ -93,27 +93,40 @@ PostgreSQL volume is mounted, so data persists even after `docker-compose down`.
 
 ### Manual Testing
 
-- **Postman** was used to test all API endpoints
-- **Frontend** was validated through interaction (margin call, chart rendering, MMR setting)
+- **Postman** was used to test all API endpoints.
+- **Frontend** was validated through interaction, including:
+  - Margin call display
+  - Chart rendering
+  - MMR setting and updating
+- Sample endpoints tested:
+  - `GET /api/positions/:clientId`
+  - `GET /api/margin-status/:clientId`
+  - `POST /api/mmr`
+  - `GET /api/market-data/`
+  - `GET /api/market-data/:symbol`
 
-### Unit Tests
+### Unit Testing
 
-- Margin logic was verified manually and via sample calculations.
+- The **margin logic** is unit tested in `backend/__tests__/marginUtils.test.js`.
+- These tests verify:
+  - Correct calculation of margin requirement and shortfall
+  - Accurate margin call triggering
+  - Edge cases such as exact threshold or zero portfolio/loan
 
-Sample endpoints tested:
+#### How to Run
 
-- `GET /api/positions/:clientId`
-- `GET /api/margin-status/:clientId`
-- `POST /api/mmr`
-- `GET /api/market-data/`
-- `GET /api/market-data/:symbol`
+```bash
+cd backend
+npm install --save-dev jest
+npx jest
+```
 
 ---
 
 ## 6. Known Limitations
 
 - Market prices are mocked using ; real-time APIs are not used
-- No test coverage via frameworks like Jest or Mocha due to time constraints
+- Changes on MMR and syncing of market price data is reflected only after changing tabs/selections
 - No sorting/pagination on tables
 - No email verification, password reset, or multi-admin support
 
