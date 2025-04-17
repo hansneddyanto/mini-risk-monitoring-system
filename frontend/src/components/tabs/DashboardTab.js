@@ -6,6 +6,8 @@ function DashboardTab({ token, user }) {
   const [margin, setMargin] = useState(null);
   const [clients, setClients] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(user.clientId || 1);
+  const [mmr, setMmr] = useState(null);
+  const [mmrInput, setMmrInput] = useState(""); // for admin input
 
   const API_BASE = "http://localhost:3001";
 
@@ -39,6 +41,19 @@ function DashboardTab({ token, user }) {
 
     fetchAll();
   }, [token, selectedClientId, user.role]);
+
+  useEffect(() => {
+    const fetchMmr = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/api/mmr`);
+        setMmr(res.data.mmr);
+      } catch (err) {
+        console.error("Failed to fetch MMR:", err);
+      }
+    };
+  
+    fetchMmr();
+  }, []);
 
   return (
     <>
@@ -109,46 +124,66 @@ function DashboardTab({ token, user }) {
 
       {/* Admin MMR Control */}
       {user.role === "admin" && (
-        <div className="bg-white shadow p-6 rounded mt-6 border border-gray-200">
+        <div className="bg-white shadow p-6 rounded mb-6 border border-gray-200">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">Admin Controls</h3>
 
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600">Set MMR (%):</label>
-            <input
-              type="number"
-              min="0.1"
-              max="100"
-              step="0.01"
-              value={(margin?.mmr || 0.25) * 100}
-              onChange={(e) =>
-                setMargin((prev) => ({
-                  ...prev,
-                  mmr: parseFloat(e.target.value) / 100,
-                }))
-              }
-              className="border px-3 py-1 rounded w-20"
-            />
-            <button
-              onClick={async () => {
-                try {
-                  await axios.post(
-                    `${API_BASE}/api/mmr`,
-                    { mmr: margin.mmr },
-                    { headers: { Authorization: `Bearer ${token}` } }
-                  );
-                  alert("MMR updated.");
-                } catch (err) {
-                  console.error("Failed to update MMR:", err);
-                  alert("Failed to update MMR.");
-                }
-              }}
-              className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
-            >
-              Update
-            </button>
+          <div className="flex items-center gap-6">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Current MMR:</p>
+              <p className="font-semibold text-lg">{(mmr * 100).toFixed(2)}%</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-600">New MMR (%):</label>
+              <input
+                type="number"
+                min="0.01"
+                max="100"
+                step="0.01"
+                value={mmrInput}
+                onChange={(e) => setMmrInput(e.target.value)}
+                placeholder="e.g. 25"
+                className="border px-3 py-1 rounded w-24"
+              />
+              <button
+                onClick={async () => {
+                  const parsedValue = parseFloat(mmrInput);
+
+                  if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 100) {
+                    alert("Please enter a valid MMR between 0 and 100 (inclusive).");
+                    return;
+                  }
+
+                  if (!/^\d+(\.\d{1,2})?$/.test(mmrInput)) {
+                    alert("MMR can only have up to 2 decimal places.");
+                    return;
+                  }
+
+                  try {
+                    await axios.post(
+                      `${API_BASE}/api/mmr`,
+                      { mmr: parsedValue / 100 },
+                      { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                    alert("MMR updated.");
+                    setMmr(parsedValue / 100);
+                    setMmrInput("");
+                  } catch (err) {
+                    console.error("Failed to update MMR:", err);
+                    alert("Failed to update MMR.");
+                  }
+                }}
+                className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+              >
+                Update
+              </button>
+
+            </div>
           </div>
         </div>
       )}
+
+
     </>
   );
 }
